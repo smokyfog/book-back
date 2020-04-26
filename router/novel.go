@@ -9,6 +9,7 @@ import (
 func InitNovelRouter(Router *gin.RouterGroup) {
 	NovelRouter := Router.Group("novel")
 	{
-		NovelRouter.GET("list", api.ListNovel)
+		NovelRouter.GET("novels", api.ListNovel)
+		NovelRouter.GET("detail/:id", api.ShowNovel)
 	}
 }

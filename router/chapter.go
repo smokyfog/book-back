@@ -10,5 +10,6 @@ func InitChapterRouter(Router *gin.RouterGroup) {
 	ChapterRouter := Router.Group("chapter")
 	{
 		ChapterRouter.GET("list", api.ListChapter)
+		ChapterRouter.GET("list/:novelId", api.ListByNovelChapter)
 	}
 }
