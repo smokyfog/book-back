@@ -5,22 +5,22 @@ import (
 	"singo/serializer"
 )
 
-// ListChapterService 视频列表服务
-type ListChapterService struct {
+// ListAuthorService 视频列表服务
+type ListAuthorService struct {
 	Limit int `form:"limit"`
 	Start int `form:"start"`
 }
 
 // List 视频列表
-func (service *ListChapterService) List() serializer.Response {
-	capters := []model.Chapter{}
+func (service *ListAuthorService) List() serializer.Response {
+	authors := []model.Author{}
 	total := 0
 
 	if service.Limit == 0 {
 		service.Limit = 6
 	}
 
-	if err := model.DB.Model(model.Chapter{}).Count(&total).Error; err != nil {
+	if err := model.DB.Model(model.Author{}).Count(&total).Error; err != nil {
 		return serializer.Response{
 			Code:  50000,
 			Msg:   "数据库连接错误",
@@ -28,7 +28,7 @@ func (service *ListChapterService) List() serializer.Response {
 		}
 	}
 
-	if err := model.DB.Limit(service.Limit).Offset(service.Start).Find(&capters).Error; err != nil {
+	if err := model.DB.Limit(service.Limit).Offset(service.Start).Find(&authors).Error; err != nil {
 		return serializer.Response{
 			Code:  50000,
 			Msg:   "数据库连接错误",
@@ -36,5 +36,5 @@ func (service *ListChapterService) List() serializer.Response {
 		}
 	}
 
-	return serializer.BuildListResponse(serializer.BuildChapters(capters), uint(total))
+	return serializer.BuildListResponse(serializer.BuildAuthors(authors), uint(total))
 }

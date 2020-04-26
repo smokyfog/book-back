@@ -1,9 +1,10 @@
-package server
+package initRouter
 
 import (
 	"os"
 	"singo/api"
 	"singo/middleware"
+	"singo/router"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,10 +34,6 @@ func NewRouter() *gin.Engine {
 		v1.PUT("video/:id", api.UpdateVideo)
 		v1.DELETE("video/:id", api.DeleteVideo)
 
-		v1.GET("novels", api.ListNovel)
-
-		v1.GET("chapters", api.ListChapter)
-
 		// 排行榜
 		v1.GET("rank/daily", api.DailyRank)
 		// 上传oss获取
@@ -53,5 +50,8 @@ func NewRouter() *gin.Engine {
 			auth.POST("videos", api.CreateVideo)
 		}
 	}
+	router.InitNovelRouter(v1)
+	router.InitChapterRouter(v1)
+	router.InitAuthorRouter(v1)
 	return r
 }

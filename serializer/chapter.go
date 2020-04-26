@@ -26,10 +26,10 @@ func BuildChapter(item model.Chapter) Chapter {
 }
 
 // 序列化视频列表
-func BuildChapters(items []model.Chapter) (novels []Chapter) {
+func BuildChapters(items []model.Chapter) (capters []Chapter) {
 	for _, item := range items {
 		novel := BuildChapter(item)
-		novels = append(novels, novel)
+		capters = append(capters, novel)
 	}
-	return novels
+	return capters
 }

@@ -16,6 +16,7 @@ type Novel struct {
 	Cover     string `gorm:"size:1000"`
 	WordCount uint
 	Type      uint
+	genre     uint
 	Hits      uint
 }
 
