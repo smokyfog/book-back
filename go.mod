@@ -5,10 +5,12 @@ go 1.12
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.0.2+incompatible
 	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/e421083458/gorm v1.0.1
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-contrib/sessions v0.0.1
 	github.com/gin-gonic/gin v1.4.0
+	github.com/go-delve/delve v1.4.0 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-redis/redis v6.15.4+incompatible
 	github.com/google/uuid v1.1.1

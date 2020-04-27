@@ -22,23 +22,18 @@ func NewRouter() *gin.Engine {
 	v1 := r.Group("/api/v1")
 	{
 		v1.POST("ping", api.Ping)
-
 		// 用户登录
 		v1.POST("user/register", api.UserRegister)
-
 		// 用户登录
 		v1.POST("user/login", api.UserLogin)
-
 		v1.GET("video/:id", api.ShowVideo)
 		v1.GET("videos", api.ListVideo)
 		v1.PUT("video/:id", api.UpdateVideo)
 		v1.DELETE("video/:id", api.DeleteVideo)
-
 		// 排行榜
 		v1.GET("rank/daily", api.DailyRank)
 		// 上传oss获取
 		v1.POST("upload/token", api.UploadToken)
-
 		// 需要登录保护的
 		auth := v1.Group("")
 		auth.Use(middleware.AuthRequired())
@@ -53,5 +48,6 @@ func NewRouter() *gin.Engine {
 	router.InitNovelRouter(v1)
 	router.InitChapterRouter(v1)
 	router.InitAuthorRouter(v1)
+	router.InitContentRouter(v1)
 	return r
 }
