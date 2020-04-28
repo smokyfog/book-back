@@ -36,7 +36,7 @@ func UserLogin(c *gin.Context) {
 // UserMe 用户详情
 func UserMe(c *gin.Context) {
 	user := CurrentUser(c)
-	res := serializer.BuildUserResponse(*user)
+	res := serializer.BuildUserResisterResponse(*user)
 	c.JSON(200, res)
 }
 
@@ -58,25 +58,25 @@ func UserLogout(c *gin.Context) {
 // }
 
 // Login 登录
-func Login(c *gin.Context) {
-	var loginReq model.LoginReq
-	if c.BindJSON(&loginReq) == nil {
-		isPass, user, err := model.LoginCheck(loginReq)
-		if isPass {
-			generateToken(c, user)
-		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"status": -1,
-				"msg":    "验证失败," + err.Error(),
-			})
-		}
-	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"status": -1,
-			"msg":    "json 解析失败",
-		})
-	}
-}
+// func Login(c *gin.Context) {
+// 	var loginReq model.LoginReq
+// 	if c.BindJSON(&loginReq) == nil {
+// 		isPass, user, err := model.LoginCheck(loginReq)
+// 		if isPass {
+// 			generateToken(c, user)
+// 		} else {
+// 			c.JSON(http.StatusOK, gin.H{
+// 				"status": -1,
+// 				"msg":    "验证失败," + err.Error(),
+// 			})
+// 		}
+// 	} else {
+// 		c.JSON(http.StatusOK, gin.H{
+// 			"status": -1,
+// 			"msg":    "json 解析失败",
+// 		})
+// 	}
+// }
 
 // // 生成令牌
 // func generateToken(c *gin.Context, user model.User) {

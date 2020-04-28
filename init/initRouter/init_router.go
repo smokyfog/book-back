@@ -24,6 +24,7 @@ func NewRouter() *gin.Engine {
 		v1.POST("ping", api.Ping)
 		// 用户登录
 		v1.POST("user/register", api.UserRegister)
+
 		// 用户登录
 		v1.POST("user/login", api.UserLogin)
 		v1.GET("video/:id", api.ShowVideo)
@@ -49,5 +50,6 @@ func NewRouter() *gin.Engine {
 	router.InitChapterRouter(v1)
 	router.InitAuthorRouter(v1)
 	router.InitContentRouter(v1)
+	router.InitAuthRouter(v1)
 	return r
 }

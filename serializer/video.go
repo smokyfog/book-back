@@ -26,7 +26,7 @@ func BuildVideo(item model.Video) Video {
 		URL:       item.URL,
 		Avatar:    item.AvatarURL(),
 		View:      item.View(),
-		User:      BuildUser(user),
+		User:      BuildUserReg(user),
 		CreatedAt: item.CreatedAt.Unix(),
 	}
 }

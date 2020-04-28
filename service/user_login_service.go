@@ -7,8 +7,6 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	"log"
-	"net/http"
 	myjwt "singo/middleware/jwt"
 	"time"
 
@@ -41,12 +39,11 @@ func (service *UserLoginService) Login(c *gin.Context) serializer.Response {
 		return serializer.ParamErr("账号或密码错误", nil)
 	}
 
-	generateToken(c, user)
-
 	// 设置session
 	service.setSession(c, user)
 
-	return serializer.BuildUserResponse(user)
+	return generateToken(c, user)
+
 }
 
 type LoginResult struct {
@@ -55,14 +52,14 @@ type LoginResult struct {
 }
 
 // 生成令牌
-func generateToken(c *gin.Context, user model.User) {
+func generateToken(c *gin.Context, user model.User) serializer.Response {
 	j := &myjwt.JWT{
 		SigningKey: []byte("newtrekWang"),
 	}
 	claims := myjwt.CustomClaims{
-		ID:   user.Id,
-		Name: user.Nickname,
-			[jwt.StandardClaims]: jwtgo.StandardClaims{
+		user.Id,
+		user.Nickname,
+		jwtgo.StandardClaims{
 			NotBefore: int64(time.Now().Unix() - 1000), // 签名生效时间
 			ExpiresAt: int64(time.Now().Unix() + 3600), // 过期时间 一小时
 			Issuer:    "newtrekWang",                   //签名的发行者
@@ -72,23 +69,9 @@ func generateToken(c *gin.Context, user model.User) {
 	token, err := j.CreateToken(claims)
 
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": -1,
-			"msg":    err.Error(),
-		})
-		return
+		return serializer.ParamErr("登录信息认证失败", nil)
+
 	}
 
-	log.Println(token)
-
-	data := LoginResult{
-		User:  user,
-		Token: token,
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": 0,
-		"msg":    "登录成功！",
-		"data":   data,
-	})
-	return
+	return serializer.BuildUserResponse(user, token)
 }
