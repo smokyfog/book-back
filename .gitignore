@@ -4,3 +4,5 @@ go.sum
 */node_modules
 node_modules
 dist
+crawler_book/content
+crawler_book/chapter
