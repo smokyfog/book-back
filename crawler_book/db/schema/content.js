@@ -6,10 +6,11 @@ const {
 
 var sequelizeInstance = require('../config/db');
 
-class Chapters extends Model {
+class Contents extends Model {
+
 }
 
-Chapters.init({
+Contents.init({
   id: {
       type: Sequelize.BIGINT(20),
       primaryKey: true,
@@ -17,10 +18,8 @@ Chapters.init({
       unique: true,
       autoIncrement: true
   },
-  novel_id: Sequelize.BIGINT(20),
-  name: Sequelize.STRING(255),
-  chapter_num: Sequelize.BIGINT(20),
-  content_id: Sequelize.BIGINT(20),
+  chapter_id: Sequelize.BIGINT(20),
+  content: Sequelize.TEXT,
   created_at: {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW,
@@ -40,8 +39,8 @@ Chapters.init({
   },
 },{
   sequelize: sequelizeInstance,
-  tableName: 'chapters',
+  tableName: 'contents',
   timestamps: false
 })
 
-module.exports = { Chapters }
+module.exports = { Contents }

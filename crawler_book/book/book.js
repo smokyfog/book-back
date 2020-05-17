@@ -6,11 +6,11 @@ const request = require('superagent')
 require('superagent-charset')(request)
 const { config } = require('../config')
 
-const addr = path.join(__dirname, '../chapter/1.json')
+const addr = path.join(__dirname, '../chapter/2.json')
 
 
 async function getChapterList() {
-  const res = await request.get(config.baseUrl + '/files/article/html/2/2689/index.html').charset('gbk')
+  const res = await request.get(config.baseUrl + '/files/article/html/2/2937/index.html').charset('gbk')
   const arr = []
   let $ = cheerio.load(res.text, { decodeEntities: false })
   $('.box .zjlist4 li a').each((idx, ele) => {
@@ -40,11 +40,15 @@ async function getContentText(href, chapterId, novelId) {
       fs.mkdirSync(contentAddr)
     }
   })
-  const res = await request.get(config.baseUrl + '/files/article/html/2/2689/' + href).charset('gbk')
-  let $ = cheerio.load(res.text, { decodeEntities: false })
-  $('#htmlContent').find('table').remove()
-  const txt = $('#htmlContent').html()
-  fs.writeFileSync(contentPath, txt)
+  try {
+    const res = await request.get(config.baseUrl + '/files/article/html/2/2937/' + href).charset('gbk')
+    let $ = cheerio.load(res.text, { decodeEntities: false })
+    $('#htmlContent').find('table').remove()
+    const txt = $('#htmlContent').html()
+    fs.writeFileSync(contentPath, txt)
+  } catch (err) {
+    console.log('getContentText', err)
+  }
 }
 
 module.exports = {

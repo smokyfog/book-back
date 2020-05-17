@@ -1,7 +1,11 @@
+const fs = require('fs')
+const path = require('path')
+
 const express = require('express')
 const app = express()
 const { getChapterList, getContent, getContentText } = require('./book/book') 
 const { Chapters } = require('./db/schema/chapter')
+const { Contents } = require('./db/schema/content')
 
 app.get('/book', async (req, res) => {
   getChapterList()
@@ -15,7 +19,7 @@ app.get('/read_book', async (req, res) => {
   // await getContentText(json[0].href, json[0].id, 1)
   for (const item of json) {
     console.log('正在爬取', item.id)
-    getContentText(item.href, item.id, 1)
+    getContentText(item.href, item.id, 2)
     console.log('爬取' + item.id + '结束')
   }
   res.send({
@@ -26,15 +30,28 @@ app.get('/read_book', async (req, res) => {
 
 app.get('/save/chapter', async (req, res) => {
   const json = await getContent()
-  json.map(item => {
+  json.map(async (item, idx) => {
     const chapter = {
-      id: item.id,
       name: item.title,
       novel_id: 1,
-      chapter_num: 1,
+      chapter_num: idx + 1,
       content_id: 1
     }
-    Chapters.create(chapter)
+    try {
+      const chaRes = await Chapters.create(chapter)
+      const contentPath = path.join(__dirname, './content/1/' + item.id + '.txt')
+      const con = fs.readFileSync(contentPath, 'utf-8')
+      const content = {
+        chapter_id: chaRes.dataValues.id,
+        content: con.trim()
+      }
+      const ConRes = await Contents.create(content)
+      const UpdateRes = await Chapters.update({content_id: ConRes.dataValues.id}, {where: {id: chaRes.dataValues.id}})
+      console.log('UpdateRes', UpdateRes)
+      console.log('id为 ' + item.name + ' 的小说已存入， contentId为' + ConRes.dataValues.id,)
+    } catch (err) {
+      console.log('save chapter error : ', err, chapter)
+    }
   })
   res.send({
     query: req.query

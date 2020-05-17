@@ -5,7 +5,7 @@ var sqlConfig = {
     host: "47.93.10.229",
     user: "root",
     password: "Adsxlwh_2008",
-    database: "test"
+    database: "book"
 }
 
 
